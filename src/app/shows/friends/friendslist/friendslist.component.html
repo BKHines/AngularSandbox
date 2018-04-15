@@ -1,0 +1,55 @@
+<div class="row">
+    <div class="col-md-1 h4">
+      Filter By:
+    </div>
+    <div class="col-md-2">
+      <select class="form-control" [(ngModel)]="filtertype" >
+        <option value="season">Season</option>
+        <option value="episodename">Episode Name</option>
+        <option value="watched">Watched</option>
+      </select>
+    </div>
+    <div class="col-md-3" *ngIf="filtertype">
+      <input *ngIf="filtertype === 'season'" type="text" class="form-control" [(ngModel)]="filtertext" placeholder="Season">
+      <input *ngIf="filtertype === 'episodename'" type="text" class="form-control" [(ngModel)]="filtertext" placeholder="Episode Name">
+      <select *ngIf="filtertype === 'watched'" class="form-control" [(ngModel)]="filtertext">
+        <option value="true">Watched</option>
+        <option value="false">Not Watched</option>
+      </select>
+    </div>
+    <div class="col-md-1" *ngIf="filtertype">
+      <button type="button" class="btn btn-danger" aria-label="close" (click)="clearFilter();">
+        <span>&times;</span>
+      </button>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th class="text-center" scope="col">Watched?</th>
+        <th scope="col">Air Date</th>
+        <th class="text-center" scope="col">Season</th>
+        <th class="text-center" scope="col">Episode</th>
+        <th class="text-center" scope="col">Overall</th>
+        <th>Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let episode of episodes | filterbyproperty : filtertype : [filtertext] : true">
+        <td class="text-center">
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="episode.watched">
+            </label>
+          </div>
+        </td>
+        <td>
+          <a [routerLink]="['/friends', episode.id]">{{ episode.airdate | date: 'MM/dd/yyyy' }}</a>
+        </td>
+        <td class="text-center">{{ episode.season }}</td>
+        <td class="text-center">{{ episode.episode }}</td>
+        <td class="text-center">{{ episode.overall }}</td>
+        <td>{{ episode.episodename }}</td>
+      </tr>
+    </tbody>
+  </table>
