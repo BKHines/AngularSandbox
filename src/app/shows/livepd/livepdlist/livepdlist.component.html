@@ -34,7 +34,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let episode of episodes | filterbyproperty : filtertype : [filtertext]">
+    <tr *ngFor="let episode of episodes | filterbyproperty : filtertype : [filtertext] : true">
       <td class="text-center">
         <div class="checkbox">
           <label>
