@@ -1,3 +1,98 @@
-<p>
-  friendsdetails works!
-</p>
+<div class="row">
+    <div class="col-md-6">
+      <button type="button" class="btn btn-link" (click)="goBack();">&lt;&lt;Back to Friends Episode List</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6 h3">
+      Details
+    </div>
+    <div class="col-md-6 h3">
+      Notes
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="row">
+        <div class="col-md-2 h4 text-right">
+          Air Date
+        </div>
+        <div class="col-md-10">
+          {{ episode.airdate }}
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-2 h4 text-right">
+            Name
+          </div>
+          <div class="col-md-10">
+            {{ episode.episodename }}
+          </div>
+        </div>
+        <div class="row">
+        <div class="col-md-2 h4 text-right">
+          Season
+        </div>
+        <div class="col-md-10">
+          {{ episode.episode }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 h4 text-right">
+          Episode
+        </div>
+        <div class="col-md-10">
+          {{ episode.episode }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 h4 text-right">
+          Overall
+        </div>
+        <div class="col-md-10">
+          {{ episode.overall }}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 h4 text-right">
+          Watched?
+        </div>
+        <div class="col-md-10">
+          {{ episode.watched ? 'Yep' : 'Nope, Not Yet' }}
+          <div class="checkbox">
+            <label>
+              <input type="checkbox" [(ngModel)]="episode.watched">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-5">
+      <div class="row">
+        <div class="col-md-12 form-group">
+          <textarea [(ngModel)]="noteEntry" rows="10" class="form-control"></textarea>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <button type="button" class="btn btn-primary" (click)="addNote()" [disabled]="!noteEntry">Add Note</button>
+          <button type="button" class="btn btn-danger" aria-label="close" (click)="clearEntry();" [disabled]="!noteEntry">
+            <span>&times;</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row" *ngIf="episode.notes && episode.notes.length > 0">
+    <div class="col-md-12 h3">
+      Notes
+    </div>
+  </div>
+  <div class="row" *ngFor="let note of episode.notes">
+    <div class="col-md-12">
+      {{ note }}&nbsp;
+      <button type="button" class="btn btn-danger" aria-label="close" (click)="deleteNote(note);">
+        <span>&times;</span>
+      </button>
+    </div>
+  </div>
