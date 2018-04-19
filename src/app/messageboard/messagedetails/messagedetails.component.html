@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="col-md-1">
+    <button *ngIf="!postEditMode" type="button" class="btn btn-primary" (click)="editPost();">Edit</button>
+  </div>
+  <div class="col-md-11 h2" *ngIf="!postEditMode">
+    {{ post?.title }}
+  </div>
+  <div class="col-md-11" *ngIf="postEditMode">
+    <input type="text" [(ngModel)]="post.title" class="form-control" placeholder="Post Title" >
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12" *ngIf="!postEditMode">
+    {{ post?.body }}
+  </div>
+  <div class="col-md-12" *ngIf="postEditMode">
+    <textarea [(ngModel)]="post.body" rows="10" class="form-control" placeholder="Post Body"></textarea>
+  </div>
+</div>
+<div class="row" *ngIf="postEditMode">
+  <div class="col-md-12">
+    <button type="button" class="btn btn-primary" (click)="updatePost();">Update</button>
+    <button type="button" class="btn btn-danger" aria-label="close" (click)="cancelPostUpdate();">Cancel</button>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col"></th>
+      <th scope="col">Name</th>
+      <th scope="col">Comment</th>
+      <th scope="col">email</th>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let comment of comments" class="form-group">
+      <td>
+        <button *ngIf="commentEditIds.indexOf(comment.id) === -1" type="button" class="btn btn-primary" (click)="editComment(comment)">Edit</button>
+      </td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) === -1">{{ comment.name }}</td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) === -1">{{ comment.body }}</td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) === -1">{{ comment.email }}</td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) > -1">
+        <input type="text" [(ngModel)]="comment.name" class="form-control" placeholder="Comment Name">
+      </td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) > -1">
+        <textarea [(ngModel)]="comment.body" rows="10" class="form-control" placeholder="Comment Body"></textarea>
+      </td>
+      <td *ngIf="commentEditIds.indexOf(comment.id) > -1">
+        <input type="text" [(ngModel)]="comment.email" class="form-control" placeholder="Comment Email">
+        <button type="button" class="btn btn-primary" (click)="updateComment(comment);">Update</button>
+        <button type="button" class="btn btn-danger" aria-label="close" (click)="cancelUpdate(comment);">Cancel</button>
+      </td>
+      <td>
+        <button *ngIf="commentEditIds.indexOf(comment.id) === -1" type="button" class="btn btn-danger" (click)="deleteComment(comment)">Delete</button>
+      </td>
+    </tr>
+    <tr>
+      <td></td>
+      <td>
+          <input type="text" [(ngModel)]="newCommentName" class="form-control" placeholder="Comment Name">
+        </td>
+        <td>
+          <textarea [(ngModel)]="newCommentBody" rows="10" class="form-control" placeholder="Comment Body"></textarea>
+        </td>
+        <td>
+          <input type="text" [(ngModel)]="newCommentEmail" class="form-control" placeholder="Comment Email">
+        </td>
+        <td>
+            <button type="button" class="btn btn-success" (click)="addComment()">Add</button>
+            <button type="button" class="btn btn-danger" aria-label="close" (click)="newCommentName = newCommentBody = newCommentEmail = '';">Cancel</button>
+        </td>
+      </tr>
+  </tbody>
+</table>

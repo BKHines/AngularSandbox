@@ -1,0 +1,26 @@
+<div class="row">
+  <div class="col-md-1 h3">
+    Users
+  </div>
+  <div class="col-md-3 form-group">
+    <select [(ngModel)]="userId" class="form-control">
+      <option *ngFor="let user of users" value="{{ user.id }}">{{ user.username }} ({{ user.email }})</option>
+    </select>
+  </div>
+</div>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th class="text-center" scope="col">Post Id</th>
+      <th scope="col">Title</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let post of posts | filterbyproperty : 'userId' : [userId]">
+      <td class="text-center">
+        <a [routerLink]="['/messages', post.id]">{{ post.id }}</a>
+      </td>
+      <td>{{ post.title }}</td>
+    </tr>
+  </tbody>
+</table>
