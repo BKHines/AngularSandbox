@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { ShareddataService } from '../../../shared/services/shareddata.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import 'rxjs/add/operator/switchMap';
+
 
 @Component({
   selector: 'app-livepddetails',

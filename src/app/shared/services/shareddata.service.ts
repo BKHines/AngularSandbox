@@ -384,7 +384,7 @@ export class ShareddataService {
 
   addEpisode(showname: string, episodename: string, season: number, overall: number, episode: number, airdate: string, notes: string, watched: boolean): boolean {
     const _episode = {
-      id: `${showname.split(' ').join('').toLowerCase()}_overall`,
+      id: `${showname.split(' ').join('').toLowerCase()}_${overall}`,
       showname: showname,
       episodename: episodename,
       season: season,
