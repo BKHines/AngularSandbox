@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShareddataService } from '../../../shared/services/shareddata.service';
+import { ShowsService } from '../../../shared/services/shows.service';
 
 @Component({
   selector: 'app-friendslist',
@@ -11,10 +11,20 @@ export class FriendslistComponent implements OnInit {
   filtertext: string;
   filtertype: string;
 
-  constructor(private sharedData: ShareddataService) { }
+  constructor(private showSvc: ShowsService) { }
 
   ngOnInit() {
-    this.episodes = this.sharedData.getEpisodesByShow('Friends');
+    this.loadEpisodes();
+  }
+
+  updateWatched(episodeId: string, watched: boolean) {
+    this.showSvc.setEpisodeWatchedFlag(episodeId, watched).subscribe(() => {}, (err) => { alert(err); }, () => { this.loadEpisodes(); });
+  }
+
+  loadEpisodes() {
+    this.showSvc.getEpisodesByShow('Friends').subscribe((res) => {
+      this.episodes = res;
+    });
   }
 
   clearFilter() {

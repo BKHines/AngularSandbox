@@ -11,7 +11,7 @@
       Notes
     </div>
   </div>
-  <div class="row">
+  <div class="row" *ngIf="episode" >
     <div class="col-md-6">
       <div class="row">
         <div class="col-md-2 h4 text-right">
@@ -83,12 +83,12 @@
       </div>
     </div>
   </div>
-  <div class="row" *ngIf="episode.notes && episode.notes.length > 0">
+  <div class="row" *ngIf="episode && episode.notes && episode.notes.length > 0">
     <div class="col-md-12 h3">
       Notes
     </div>
   </div>
-  <div class="row" *ngFor="let note of episode.notes">
+  <div class="row" *ngFor="let note of episode?.notes">
     <div class="col-md-12">
       {{ note }}&nbsp;
       <button type="button" class="btn btn-danger" aria-label="close" (click)="deleteNote(note);">

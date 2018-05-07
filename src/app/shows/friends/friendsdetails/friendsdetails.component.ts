@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { ShareddataService } from '../../../shared/services/shareddata.service';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
+import { ShowsService } from '../../../shared/services/shows.service';
 
 @Component({
   selector: 'app-friendsdetails',
@@ -13,12 +13,12 @@ export class FriendsdetailsComponent implements OnInit {
   episode: any;
   noteEntry: string;
 
-  constructor(private sharedData: ShareddataService, private route: ActivatedRoute, private _loc: Location) { }
+  constructor(private showsSvc: ShowsService, private route: ActivatedRoute, private _loc: Location) { }
 
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.episodeId = params['id'];
-      this.episode = this.sharedData.getEpisodeById(this.episodeId);
+      this.loadEpisode();
     });
   }
 
@@ -27,12 +27,26 @@ export class FriendsdetailsComponent implements OnInit {
   }
 
   addNote() {
-    this.sharedData.addNote(this.episodeId, this.noteEntry);
-    this.clearEntry();
+    this.showsSvc.addNote(this.episodeId, this.noteEntry).subscribe((res) => {
+      this.clearEntry();
+      this.loadEpisode();
+    }, (err) => {
+      alert(err);
+    });
   }
 
   deleteNote(noteText: string) {
-    this.sharedData.deleteNote(this.episodeId, noteText);
+    this.showsSvc.deleteNote(this.episodeId, noteText).subscribe((res) => { this.loadEpisode(); }, (err) => { alert(err); });
+  }
+
+  updateWatched(episodeId: string, watched: boolean) {
+    this.showsSvc.setEpisodeWatchedFlag(episodeId, watched).subscribe(() => {}, (err) => { alert(err); }, () => { this.loadEpisode(); });
+  }
+
+  loadEpisode() {
+    this.showsSvc.getEpisodeById(this.episodeId).subscribe((res) => {
+      this.episode = res;
+    });
   }
 
   clearEntry() {

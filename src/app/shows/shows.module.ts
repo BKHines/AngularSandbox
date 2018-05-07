@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { LivepdlistComponent } from './livepd/livepdlist/livepdlist.component';
 import { LivepddetailsComponent } from './livepd/livepddetails/livepddetails.component';
-import { ShareddataService } from '../shared/services/shareddata.service';
 import { CommonfunctionsService } from '../shared/common/commonfunctions.service';
 import { RouterModule } from '@angular/router';
 import { FriendslistComponent } from './friends/friendslist/friendslist.component';
@@ -18,6 +17,6 @@ import { SharedModule } from '../shared/shared.module';
     SharedModule
   ],
   declarations: [LivepdlistComponent, LivepddetailsComponent, FriendslistComponent, FriendsdetailsComponent],
-  providers: [ShareddataService, CommonfunctionsService]
+  providers: [CommonfunctionsService]
 })
 export class ShowsModule { }

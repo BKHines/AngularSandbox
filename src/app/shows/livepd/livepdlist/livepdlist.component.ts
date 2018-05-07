@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ShareddataService } from '../../../shared/services/shareddata.service';
+import { ShowsService } from '../../../shared/services/shows.service';
 
 @Component({
   selector: 'app-livepdlist',
@@ -11,13 +11,23 @@ export class LivepdlistComponent implements OnInit {
   filtertype: string;
   filtertext: string;
 
-  constructor(private sharedData: ShareddataService) { }
+  constructor(private showSvc: ShowsService) { }
 
   ngOnInit() {
-    this.episodes = this.sharedData.getEpisodesByShow('Live PD');
+    this.loadEpisodes();
   }
 
-  clearFilter() {
+  updateWatched(episodeId: string, watched: boolean) {
+    this.showSvc.setEpisodeWatchedFlag(episodeId, watched).subscribe(() => {}, (err) => { alert(err); }, () => { this.loadEpisodes(); });
+  }
+
+  loadEpisodes() {
+    this.showSvc.getEpisodesByShow('Live PD').subscribe((res) => {
+      this.episodes = res;
+    });
+  }
+
+clearFilter() {
     this.filtertype = '';
     this.filtertext = '';
   }
