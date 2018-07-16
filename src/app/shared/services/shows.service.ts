@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
+import { catchError, retry, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +14,7 @@ export class ShowsService {
 
   getEpisodes(): Observable<any[]> {
     const requrl = `${this.baseurl}/api/shows/getepisodes`;
-    return this.http.get(requrl).pipe(catchError(this.handleError));
+    return this.http.get(requrl).pipe(take(1), catchError(this.handleError));
   }
 
   getEpisodeById(showId: string) {
