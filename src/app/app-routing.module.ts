@@ -6,6 +6,7 @@ import { FriendslistComponent } from './shows/friends/friendslist/friendslist.co
 import { FriendsdetailsComponent } from './shows/friends/friendsdetails/friendsdetails.component';
 import { MessagesComponent } from './messageboard/messages/messages.component';
 import { MessagedetailsComponent } from './messageboard/messagedetails/messagedetails.component';
+import { RefreshComponent } from './refresh/refresh.component';
 
 const routes: Routes = [
   { path: 'livepd', component: LivepdlistComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'friends', component: FriendslistComponent },
   { path: 'friends/:id', component: FriendsdetailsComponent },
   { path: 'messages', component: MessagesComponent},
-  { path: 'messages/:id', component: MessagedetailsComponent}
+  { path: 'messages/:id', component: MessagedetailsComponent},
+  { path: 'refreshtest/:id', component: RefreshComponent }
 ];
 
 @NgModule({

@@ -6,11 +6,13 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { ShowsModule } from './shows/shows.module';
 import { MessageboardModule } from './messageboard/messageboard.module';
+import { RefreshComponent } from './refresh/refresh.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RefreshComponent
   ],
   imports: [
     BrowserModule,
@@ -19,6 +21,7 @@ import { MessageboardModule } from './messageboard/messageboard.module';
     MessageboardModule
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  entryComponents: [RefreshComponent]
 })
 export class AppModule { }
