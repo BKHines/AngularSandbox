@@ -7,6 +7,8 @@ import { AppComponent } from './app.component';
 import { ShowsModule } from './shows/shows.module';
 import { MessageboardModule } from './messageboard/messageboard.module';
 import { RefreshComponent } from './refresh/refresh.component';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpRequestInterceptor } from './shared/services/http.interceptor';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { RefreshComponent } from './refresh/refresh.component';
     ShowsModule,
     MessageboardModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [RefreshComponent]
 })
