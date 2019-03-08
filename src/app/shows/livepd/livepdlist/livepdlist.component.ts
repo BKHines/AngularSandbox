@@ -22,7 +22,7 @@ export class LivepdlistComponent implements OnInit {
   }
 
   loadEpisodes() {
-    this.showSvc.getEpisodesByShow('Live PD').subscribe((res) => {
+    this.showSvc.getEpisodesByShow('Live PD').subscribe((res: any) => {
       this.episodes = res;
     });
   }

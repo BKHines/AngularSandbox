@@ -22,7 +22,7 @@ export class FriendslistComponent implements OnInit {
   }
 
   loadEpisodes() {
-    this.showSvc.getEpisodesByShow('Friends').subscribe((res) => {
+    this.showSvc.getEpisodesByShow('Friends').subscribe((res: any) => {
       this.episodes = res;
     });
   }

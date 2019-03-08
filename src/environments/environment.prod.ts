@@ -1,4 +1,5 @@
 export const environment = {
-  baseApiUrl: 'https://jsonplaceholder.typicode.com',
+  baseJsonUrl: 'https://jsonplaceholder.typicode.com',
+  baseShowsUrl: 'http://apisandbox.servehttp.com',
   production: true
 };

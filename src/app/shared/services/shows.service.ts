@@ -1,45 +1,41 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry, take } from 'rxjs/operators';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ShowsService {
-  baseurl = 'http://apisandbox.servehttp.com';
-  // baseurl = 'http://localhost:52841';
-
   constructor(private http: HttpClient) { }
 
   getEpisodes(): Observable<any[]> {
-    const requrl = `${this.baseurl}/api/shows/getepisodes`;
-    return this.http.get(requrl).pipe(take(1), catchError(this.handleError));
+    const requrl = `/api/shows/getepisodes`;
+    return this.http.get<any[]>(requrl, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   getEpisodeById(showId: string) {
-    const requrl = `${this.baseurl}/api/shows/retrieveepisodebyid`;
-    return this.http.post(requrl, { id: showId}).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/retrieveepisodebyid`;
+    return this.http.post(requrl, { id: showId}, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   getEpisodesByShow(showname: string) {
-    const requrl = `${this.baseurl}/api/shows/retrieveepisodesbyshow`;
-    return this.http.post(requrl, { showname: showname }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/retrieveepisodesbyshow`;
+    return this.http.post(requrl, { showname: showname }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   getEpisodesByShowAndSeason(showname: string, season: number) {
-    const requrl = `${this.baseurl}/api/shows/retrieveepisodesbyshowandseason`;
-    return this.http.post(requrl, { showname: showname, season: season }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/retrieveepisodesbyshowandseason`;
+    return this.http.post(requrl, { showname: showname, season: season }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   getEpisodesByShowAndDates(showname: string, startdate: Date, enddate: Date) {
-    const requrl = `${this.baseurl}/api/shows/retrieveepisodesbyshowanddates`;
-    return this.http.post(requrl, { showname: showname, startdate: startdate, enddate: enddate }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/retrieveepisodesbyshowanddates`;
+    return this.http.post(requrl, { showname: showname, startdate: startdate, enddate: enddate }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   getEpisodeByShowSeasonAndEpisode(showname: string, season: number, episode: number) {
-    const requrl = `${this.baseurl}/api/shows/retrieveepisodebyshowseasonandepisode`;
-    return this.http.post(requrl, { showname: showname, season: season, episode: episode }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/retrieveepisodebyshowseasonandepisode`;
+    return this.http.post(requrl, { showname: showname, season: season, episode: episode }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   addEpisode(showname: string, episodename: string, season: number, overall: number, episode: number, airdate: string, notes: string, watched: boolean) {
@@ -53,47 +49,32 @@ export class ShowsService {
       watched: watched
     };
 
-    const requrl = `${this.baseurl}/api/shows/addepisode`;
-    return this.http.post(requrl, _episode).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/addepisode`;
+    return this.http.post(requrl, _episode, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   deleteEpisode(id: string) {
-    const requrl = `${this.baseurl}/api/shows/deleteepisode`;
-    return this.http.post(requrl, { id: id }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/deleteepisode`;
+    return this.http.post(requrl, { id: id }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   addNote(id: string, note: string) {
-    const requrl = `${this.baseurl}/api/shows/addnote`;
-    return this.http.post(requrl, { id: id, note: note }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/addnote`;
+    return this.http.post(requrl, { id: id, note: note }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   deleteNote(id: string, note: string) {
-    const requrl = `${this.baseurl}/api/shows/deletenote`;
-    return this.http.post(requrl, { id: id, note: note }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/deletenote`;
+    return this.http.post(requrl, { id: id, note: note }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   setEpisodeWatchedFlag(id: string, watched: boolean) {
-    const requrl = `${this.baseurl}/api/shows/setepisodewatchedflag`;
-    return this.http.post(requrl, { id: id, watched: watched }).pipe(catchError(this.handleError));
+    const requrl = `/api/shows/setepisodewatchedflag`;
+    return this.http.post(requrl, { id: id, watched: watched }, { headers: new HttpHeaders().set('type', 'show') });
   }
 
   resetData() {
-    const requrl = `${this.baseurl}/api/shows/resetdata`;
-    return this.http.get(requrl).pipe(catchError(this.handleError));
-  }
-
-  private handleError(error: HttpErrorResponse): Observable<any> {
-    if (error.error instanceof ErrorEvent) {
-      // A client-side or network error occurred. Handle it accordingly.
-      console.error('An error occurred:', error.error.message);
-    } else {
-      // The backend returned an unsuccessful response code.
-      // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
-    }
-    // return an observable with a user-facing error message
-    return throwError('Something bad happened; please try again later.');
+    const requrl = `/api/shows/resetdata`;
+    return this.http.get(requrl, { headers: new HttpHeaders().set('type', 'show') });
   }
 }
