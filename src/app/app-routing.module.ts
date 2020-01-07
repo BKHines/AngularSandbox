@@ -7,6 +7,7 @@ import { FriendsdetailsComponent } from './shows/friends/friendsdetails/friendsd
 import { MessagesComponent } from './messageboard/messages/messages.component';
 import { MessagedetailsComponent } from './messageboard/messagedetails/messagedetails.component';
 import { RefreshComponent } from './refresh/refresh.component';
+import { RandomgeneratorComponent } from './randomgenerator/randomgenerator.component';
 
 const routes: Routes = [
   { path: 'livepd', component: LivepdlistComponent },
@@ -15,7 +16,8 @@ const routes: Routes = [
   { path: 'friends/:id', component: FriendsdetailsComponent },
   { path: 'messages', component: MessagesComponent},
   { path: 'messages/:id', component: MessagedetailsComponent},
-  { path: 'refreshtest/:id', component: RefreshComponent }
+  { path: 'refreshtest/:id', component: RefreshComponent },
+  { path: 'randomgenerator', component: RandomgeneratorComponent }
 ];
 
 @NgModule({

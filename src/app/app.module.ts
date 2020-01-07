@@ -9,12 +9,14 @@ import { MessageboardModule } from './messageboard/messageboard.module';
 import { RefreshComponent } from './refresh/refresh.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestInterceptor } from './shared/services/http.interceptor';
+import { RandomgeneratorComponent } from './randomgenerator/randomgenerator.component';
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    RefreshComponent
+    RefreshComponent,
+    RandomgeneratorComponent
   ],
   imports: [
     BrowserModule,
