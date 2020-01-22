@@ -133,6 +133,8 @@ export class RandomgeneratorComponent implements OnInit {
       this.squares.splice(_randomNumber, 1);
       console.log(this.squares);
     });
+
+    this.names.sort((a, b) => a.square - b.square);
   }
 
 }
