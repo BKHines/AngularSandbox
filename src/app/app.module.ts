@@ -10,6 +10,7 @@ import { RefreshComponent } from './refresh/refresh.component';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HttpRequestInterceptor } from './shared/services/http.interceptor';
 import { RandomgeneratorComponent } from './randomgenerator/randomgenerator.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -20,6 +21,7 @@ import { RandomgeneratorComponent } from './randomgenerator/randomgenerator.comp
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     ShowsModule,
     MessageboardModule

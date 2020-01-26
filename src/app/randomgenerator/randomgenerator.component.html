@@ -1,10 +1,56 @@
 <table>
-    <tr *ngFor="let n of names">
-        <td>
-            {{ n.name }}
-        </td>
-        <td>
-            {{ n.square }}
+    <tr *ngIf="canBeRandomized">
+        <td colspan="4">
+            <button class="btn btn-primary" (click)="randomize()">Randomize</button>
         </td>
     </tr>
+    <tr *ngIf="names && names.length > 0">
+        <td colspan="4">
+            <a [href]="encodedURIComponent" download>Right-click and choose 'save as...'</a>
+        </td>
+    </tr>
+    <tr *ngIf="names && names.length > 0 && !canBeRandomized">
+        <td colspan="4">
+            <button class="btn btn-primary" (click)="copyNames()">Copy Names</button>
+        </td>
+    </tr>
+    <tr *ngIf="names && names.length > 0" style="font-weight: bold;">
+        <th>
+            Name
+        </th>
+        <th>
+            Square
+        </th>
+        <th>
+            Message
+        </th>
+        <th>
+            Delivered?
+        </th>
+    </tr>
+    <ng-template ngFor [ngForOf]="names" let-n>
+        <tr>
+            <td>
+                {{ n.name }}
+            </td>
+            <td>
+                {{ n.square }}
+            </td>
+            <td *ngIf="n.email && n.email !== 'FB'">
+                <a style="cursor: pointer;" (click)="setMessage(n.square, true);">Send Email</a>
+            </td>
+            <td *ngIf="!n.email || n.email === 'FB'">
+                <a style="cursor: pointer;" (click)="setMessage(n.square, false);">Copy Message to Clipboard</a>
+            </td>
+            <td>
+                <input type="checkbox" [(ngModel)]="n.numbersdelivered"
+                    (ngModelChange)="updateAllNames($event, n.name)">
+            </td>
+        </tr>
+        <tr *ngIf="n.message" style="border-top: 3px solid black; border-bottom: 3px solid black;">
+            <td colspan="4">
+                <span [innerHTML]="n.message" [id]="'message' + n.square"></span>
+            </td>
+        </tr>
+    </ng-template>
 </table>
