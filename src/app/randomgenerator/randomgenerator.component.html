@@ -4,11 +4,6 @@
             <button class="btn btn-primary" (click)="randomize()">Randomize</button>
         </td>
     </tr>
-    <tr *ngIf="names && names.length > 0">
-        <td colspan="4">
-            <a [href]="encodedURIComponent" download>Right-click and choose 'save as...'</a>
-        </td>
-    </tr>
     <tr *ngIf="names && names.length > 0 && !canBeRandomized">
         <td colspan="4">
             <button class="btn btn-primary" (click)="copyNames()">Copy Names</button>

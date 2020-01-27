@@ -5,6 +5,6 @@
 
 export const environment = {
   baseJsonUrl: 'https://jsonplaceholder.typicode.com',
-  baseShowsUrl: 'http://localhost:52841',
+  baseSandboxUrl: 'http://localhost:52841',
   production: false
 };

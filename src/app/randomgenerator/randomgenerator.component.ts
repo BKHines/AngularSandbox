@@ -1,14 +1,6 @@
-import { Component, OnInit, Sanitizer } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpBackend } from '@angular/common/http';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
-
-interface IName {
-  name: string;
-  square: number;
-  email: string,
-  message: string;
-  numbersdelivered: boolean;
-}
+import { IName, SquarenamesService } from '../shared/services/squarenames.service';
 
 interface ISquare {
   square: number;
@@ -28,17 +20,16 @@ export class RandomgeneratorComponent implements OnInit {
 
   squareNumbers: number[];
 
-  encodedURIComponent: SafeUrl;
-
   private http: HttpClient;
 
-  constructor(handler: HttpBackend, private sanitizer: DomSanitizer) {
+  constructor(handler: HttpBackend, private squareNamesSvc: SquarenamesService) {
     this.http = new HttpClient(handler);
   }
 
   ngOnInit() {
     this.squareNumbers = [];
-    this.http.get('./assets/names.json').subscribe((res: IName[]) => {
+    // this.http.get('./assets/names.json').subscribe((res: IName[]) => {
+    this.squareNamesSvc.getSquareNames().subscribe((res: IName[]) => {
       this.names = res;
 
       if (this.names.every(a => !a.numbersdelivered)) {
@@ -69,7 +60,7 @@ export class RandomgeneratorComponent implements OnInit {
 
     this.names.sort((a, b) => a.square - b.square);
 
-    this.updateDownloadURI();
+    this.saveSquares();
   }
 
   setMessage(squareNumber: number, sendEmail: boolean) {
@@ -84,18 +75,21 @@ export class RandomgeneratorComponent implements OnInit {
   }
 
   setMessageWork(squareNumber: number, sendEmail: boolean) {
-    let emailmessage: { msg: string, prefix?: string, suffix?: string }[] = [];
-    let shareLink: string = 'https://docs.google.com/spreadsheets/d/1Ca_bHVcmRO-Yt6Y1es8aa3a3UMv4OqqNcqjhS5A8DHo?usp=sharing';
-    let emailtab = '%20%20%20%20';
+    const emailmessage: { msg: string, prefix?: string, suffix?: string }[] = [];
+    const shareLink = 'https://docs.google.com/spreadsheets/d/1Ca_bHVcmRO-Yt6Y1es8aa3a3UMv4OqqNcqjhS5A8DHo?usp=sharing';
+    const emailtab = '%20%20%20%20';
 
-    let _name = this.names.find(a => a.square === squareNumber);
-    let names = this.names.filter(a => a.name === _name.name);
+    const _name = this.names.find(a => a.square === squareNumber);
+    const names = this.names.filter(a => a.name === _name.name);
     emailmessage.push({ msg: `Hey ${_name.name.split(' ')[0]},` });
     emailmessage.push({ msg: '' });
+    // tslint:disable-next-line:max-line-length
     emailmessage.push({ msg: `Thank you again so much for helping me raise money to send Tyler to study abroad this summer.  I can't even begin to thank you for your support.  Here are a reminder of the rules, a link to the board (to print) and your numbers.  Best of luck to everyone and thanks again!` });
     emailmessage.push({ msg: '' });
     emailmessage.push({ msg: 'Rules:', prefix: sendEmail ? '' : '<strong>', suffix: sendEmail ? '' : '</strong>' });
+    // tslint:disable-next-line:max-line-length
     emailmessage.push({ msg: 'If your combination of numbers match the last numbers of the score at the end of the 1st, 2nd or 3rd quarter or the final score (4th quarter or OT), you win!', prefix: sendEmail ? emailtab : '<span class="tabbed">', suffix: sendEmail ? '' : '</span>' });
+    // tslint:disable-next-line:max-line-length
     emailmessage.push({ msg: 'If a square comes up more than once, the owner of the square wins each time', prefix: sendEmail ? emailtab : '<span class="tabbed">', suffix: sendEmail ? '' : '</span>' });
     emailmessage.push({ msg: `$500 goes to winners, $500 goes to Tyler's Study Abroad Fund`, prefix: sendEmail ? emailtab : '<span class="tabbed">', suffix: sendEmail ? '' : '</span>' });
     emailmessage.push({ msg: '' });
@@ -107,8 +101,8 @@ export class RandomgeneratorComponent implements OnInit {
     emailmessage.push({ msg: '' });
     emailmessage.push({ msg: 'Your Numbers:', prefix: sendEmail ? '' : '<strong>', suffix: sendEmail ? '' : '</strong>' });
     names.forEach((n) => {
-      let _square = this.squares.find(a => a.square === n.square);
-      let _emailMessage = `AFC: ${_square.afc}, NFC: ${_square.nfc}`;
+      const _square = this.squares.find(a => a.square === n.square);
+      const _emailMessage = `AFC: ${_square.afc}, NFC: ${_square.nfc}`;
       emailmessage.push({ msg: _emailMessage, prefix: sendEmail ? emailtab : '<span class="tabbed">', suffix: sendEmail ? '' : '</span>' });
     });
     emailmessage.push({ msg: '' });
@@ -124,6 +118,7 @@ export class RandomgeneratorComponent implements OnInit {
           return `${a.msg}`;
         }
       }).join('%0A')}`;
+      this.saveSquares();
       window.open(_url, '_blank');
     } else {
       if (_name.message) {
@@ -137,16 +132,15 @@ export class RandomgeneratorComponent implements OnInit {
           }
         }).join('<br />');
 
+        this.saveSquares();
         setTimeout(() => {
-          let _message = document.getElementById('message' + squareNumber);
+          const _message = document.getElementById('message' + squareNumber);
           if (_message) {
             this.copyMessage(_message.innerText);
           }
         }, 300);
       }
     }
-
-    this.updateDownloadURI();
   }
 
   copyNames() {
@@ -163,11 +157,11 @@ export class RandomgeneratorComponent implements OnInit {
     });
 
     this.canBeRandomized = !this.names.some(a => a.numbersdelivered);
-    this.updateDownloadURI();
+
+    this.saveSquares();
   }
 
-  updateDownloadURI() {
-    let theJSON = JSON.stringify(this.names);
-    this.encodedURIComponent = this.sanitizer.bypassSecurityTrustUrl("data:application/json;charset=UTF-8," + encodeURIComponent(theJSON));
+  saveSquares() {
+    this.squareNamesSvc.saveNewSquareNames(this.names).subscribe();
   }
 }

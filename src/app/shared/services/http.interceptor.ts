@@ -8,7 +8,7 @@ import { map, catchError } from 'rxjs/operators';
 export class HttpRequestInterceptor implements HttpInterceptor {
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         const token = 'InsertTokenHere';
-        const fullurl = this.getFullUrl(req.url, req.headers.get('type') === 'show');
+        const fullurl = this.getFullUrl(req.url, /show|squarenames/i.test(req.headers.get('type')));
         req = req.clone({url: fullurl, headers: req.headers.set('Authorization', `Bearer ${token}`), params: req.params });
 
         // send to server log
@@ -26,8 +26,8 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         );
     }
 
-    private getFullUrl(reqUrl: string, isshows: boolean): string {
-        const _baseApiUrl = isshows ? environment.baseShowsUrl : environment.baseJsonUrl;
+    private getFullUrl(reqUrl: string, isapisandbox: boolean): string {
+        const _baseApiUrl = isapisandbox ? environment.baseSandboxUrl : environment.baseJsonUrl;
         return _baseApiUrl + reqUrl;
     }
 
