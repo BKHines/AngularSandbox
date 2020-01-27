@@ -1,12 +1,8 @@
 <table>
-    <tr *ngIf="canBeRandomized">
+    <tr *ngIf="names && names.length > 0 && (canBeRandomized || namesCanBeCopied)">
         <td colspan="4">
-            <button class="btn btn-primary" (click)="randomize()">Randomize</button>
-        </td>
-    </tr>
-    <tr *ngIf="names && names.length > 0 && !canBeRandomized">
-        <td colspan="4">
-            <button class="btn btn-primary" (click)="copyNames()">Copy Names</button>
+            <button class="btn btn-primary" *ngIf="canBeRandomized" (click)="randomize()">Randomize</button>&nbsp;
+            <button class="btn btn-primary" *ngIf="namesCanBeCopied" (click)="copyNames()">Copy Names</button>
         </td>
     </tr>
     <tr *ngIf="names && names.length > 0" style="font-weight: bold;">
@@ -16,10 +12,10 @@
         <th>
             Square
         </th>
-        <th>
+        <th *ngIf="names[0].square > 0">
             Message
         </th>
-        <th>
+        <th *ngIf="names[0].square > 0">
             Delivered?
         </th>
     </tr>
@@ -32,13 +28,13 @@
                 {{ n.square }}
             </td>
             <td *ngIf="n.email && n.email !== 'FB'">
-                <a style="cursor: pointer;" (click)="setMessage(n.square, true);">Send Email</a>
+                <a *ngIf="n.square > 0" style="cursor: pointer;" (click)="setMessage(n.square, true);">Send Email</a>
             </td>
             <td *ngIf="!n.email || n.email === 'FB'">
-                <a style="cursor: pointer;" (click)="setMessage(n.square, false);">Copy Message to Clipboard</a>
+                <a *ngIf="n.square > 0" style="cursor: pointer;" (click)="setMessage(n.square, false);">Copy Message to Clipboard</a>
             </td>
             <td>
-                <input type="checkbox" [(ngModel)]="n.numbersdelivered"
+                <input type="checkbox" *ngIf="n.square > 0" [(ngModel)]="n.numbersdelivered"
                     (ngModelChange)="updateAllNames($event, n.name)">
             </td>
         </tr>

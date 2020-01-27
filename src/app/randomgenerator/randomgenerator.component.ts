@@ -17,6 +17,7 @@ export class RandomgeneratorComponent implements OnInit {
   names: IName[];
   squares: ISquare[];
   canBeRandomized: boolean;
+  namesCanBeCopied: boolean;
 
   squareNumbers: number[];
 
@@ -34,6 +35,10 @@ export class RandomgeneratorComponent implements OnInit {
 
       if (this.names.every(a => !a.numbersdelivered)) {
         this.canBeRandomized = true;
+      }
+
+      if (this.names.some(a => a.square > 0)) {
+        this.namesCanBeCopied = true;
       }
     });
   }
@@ -61,6 +66,8 @@ export class RandomgeneratorComponent implements OnInit {
     this.names.sort((a, b) => a.square - b.square);
 
     this.saveSquares();
+
+    this.namesCanBeCopied = this.names.filter(a => a.square > 0).length > 0;
   }
 
   setMessage(squareNumber: number, sendEmail: boolean) {
